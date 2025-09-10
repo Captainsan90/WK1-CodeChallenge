@@ -3,7 +3,7 @@ SA.01: WK1: Code Challenge
 By Brian Sanare
 
 Description
-This repository contains solutions to three JavaScript coding challenges. Each challenge is presented as a standalone web page, complete with its own HTML, CSS, and JavaScript files. 
+This repository contains solutions to three JavaScript coding challenges. Each challenge is presented as a standalone web page, complete and written in HTML, CSS, and JavaScript
 
 The three challenges included are:
 a) Student Grade Generator: A web-based grade calculator that takes a user's numerical score (from 0 to 100) and displays the corresponding letter grade based on a predefined grading scale.
