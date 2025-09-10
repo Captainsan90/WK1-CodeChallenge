@@ -1,0 +1,155 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Grade Calculator!!</title>
+        <style>
+    /* Styles the entire body of my page */
+            body {
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                font-family: Arial, sans-serif;
+                overflow: hidden; 
+                position: relative;
+        /* Creates a gradient background from brown to white */
+                background: linear-gradient(to right, brown,white);
+            }
+    /* Creates a pseudo-element before the body content */
+            body::before {
+                content: '';
+                position: absolute;
+                top: -50px; 
+                left: -50px;
+                right: -50px;
+                bottom: -50px;
+                background: inherit;
+                filter: blur(50px);
+                z-index: -1;
+            }
+
+        /* Styles the main container holding the calculator */
+            .container {
+                background-color: rgba(255, 255, 255, 0.8);
+                padding: 30px 40px;
+                border-radius: 15px;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+                text-align: center;
+                max-width: 400px;
+                width: 90%;
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+            }
+    /* Styles the main heading */
+            h1 {
+                color: #333;
+                margin-bottom: 25px;
+                font-size: 1.8em;
+            }
+
+            .input-group {
+                margin-bottom: 20px;
+                text-align: left;
+            }
+    /* Styles the labels */
+            label {
+                display: block;
+                margin-bottom: 8px;
+                color: #555;
+                font-weight: bold;
+            }
+    /* sttyles the number input field */
+            input[type="number"] {
+                width: calc(100% - 20px); 
+                padding: 12px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 1.1em;
+                outline: none;
+                transition: border-color 0.3s;
+            }
+
+            input[type="number"]:focus {
+                border-color: #007bff;
+            }
+
+            button {
+                background-color: #007bff;
+                color: white;
+                padding: 12px 25px;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 1.1em;
+                transition: background-color 0.3s ease;
+            }
+    /* Styles the button when the mouse hovers over it */
+            button:hover {
+                background-color: #0056b3;
+            }
+
+            .result {
+                margin-top: 25px;
+                font-size: 1.5em;
+                font-weight: bold;
+                color: #28a745; 
+            }
+
+            .result.error {
+                color: #dc3545; 
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>My Grade Calculator</h1>
+            <div class="input-group">
+                <label for="marksInput">Enter Marks (0-100):</label>
+                <input type="number" id="marksInput" min="0" max="100" placeholder="e.g., 75">
+            </div>
+            <button onclick="calculateAndDisplayGrade()">Get Grade</button>
+            <div id="gradeResult" class="result"></div>
+        </div>
+
+        <script>
+            function calculateAndDisplayGrade() {
+            // Gets the input element by its ID
+                const marksInput = document.getElementById('marksInput');
+            // Gets the result div by its ID    
+                const resultDiv = document.getElementById('gradeResult');
+                const input = marksInput.value;
+                // Converts the input value to a floating-point number
+                const marks = parseFloat(input);
+
+                
+                resultDiv.textContent = '';
+                resultDiv.classList.remove('error');
+
+                if (input.trim() === '' || marks !== marks || marks < 0 || marks > 100) {
+                    resultDiv.textContent = "Invalid input. Enter 0-100.";
+                    resultDiv.classList.add('error');
+                    return;
+                }
+
+                let grade;
+            // The grade calculation logic, using a series of if/else if statements
+                if (marks > 79) {
+                    grade = 'A';
+                } else if (marks >= 60) {
+                    grade = 'B';
+                } else if (marks >= 49) {
+                    grade = 'C';
+                } else if (marks >= 40) {
+                    grade = 'D';
+                } else {
+                    grade = 'E fanya kazi jamaa';
+                }
+                
+                resultDiv.textContent = `Grade: ${grade}`;
+            }
+        </script>
+    </body>
+    </html>

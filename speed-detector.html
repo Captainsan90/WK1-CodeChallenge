@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Kenya Net Salary Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 400px; margin: 20px auto; }
+    label, input { display: block; width: 100%; margin: 10px 0; }
+    button { padding: 10px; width: 100%; }
+    .result { margin-top: 20px; padding: 10px; background: #f0f0f0; }
+  </style>
+</head>
+<body>
+  <h2>Kenya Net Salary Calculator</h2>
+   <!-- Input for Basic Salary -->
+  <label>
+    Basic Salary (KSh):
+    <input type="number" id="basic" placeholder="Enter basic salary">
+  </label>
+<!-- Input for Benefits -->
+  <label>
+    Benefits (KSh):
+    <input type="number" id="benefits" placeholder="Enter benefits">
+  </label>
+  <button onclick="calculate()">Calculate Net Salary</button>
+
+  <div class="result" id="output"></div>
+
+  <script>
+      // Function to calculate PAYE using KRa tax bands
+    function calculatePAYE(taxable) {
+    /*
+        PAYE (progressive rates as of July 2023):
+        - 10% on first KSh 24,000
+        - 25% on next KSh 8,333
+        - 30% on next KSh 467,667
+        - 32.5% on next KSh 300,000
+        - 35% on income above KSh 800,000
+        - Personal Relief = KSh 2,400/month (subtracted from PAYE)
+      */
+      const bands = [
+        { limit: 24000, rate: 0.10 },
+        { limit: 8333, rate: 0.25 },
+        { limit: 467667, rate: 0.30 },
+        { limit: 300000, rate: 0.325 },
+        { limit: Infinity, rate: 0.35 }
+      ];
+      const relief = 2400;
+      let remaining = taxable;
+      let tax = 0;
+
+      for (let band of bands) {
+        const amount = Math.min(remaining, band.limit);
+        tax += amount * band.rate;
+        remaining -= amount;
+        if (remaining <= 0) break;
+      }
+
+      tax -= relief;
+// Tax cannot be negative 
+      return Math.max(tax, 0);
+    }
+
+    function calculate() {
+      const basic = parseFloat(document.getElementById('basic').value) || 0;
+      const benefits = parseFloat(document.getElementById('benefits').value) || 0;
+
+      const gross = basic + benefits;
+      const payee = calculatePAYE(gross);
+
+      const shif = gross * 0.0275;
+ /*
+        NSSF (National Social Security Fund - 2013 Act)
+        Employee contributes 6% of pensionable pay
+        Tier I: up to 8,000 → 6% = max 480
+        Tier II: between 8,001 and 72,000 → additional 6% up to max 3,840
+        Total max NSSF employee contribution = 4,320
+    */
+
+      let nssf = 0;
+      const tier1 = Math.min(gross, 8000);
+      nssf += tier1 * 0.06;
+      if (gross > 8000) {
+        const tier2 = Math.min(gross - 8000, 72000 - 8000);
+        nssf += tier2 * 0.06;
+      }
+
+      const net = gross - payee - shif - nssf;
+
+      document.getElementById('output').innerHTML = `
+        <strong>Gross Salary:</strong> KSh ${gross.toFixed(2)}<br>
+        <strong>PAYE (Tax):</strong> KSh ${payee.toFixed(2)}<br>
+        <strong>SHIF Deduction:</strong> KSh ${shif.toFixed(2)}<br>
+        <strong>NSSF Deduction:</strong> KSh ${nssf.toFixed(2)}<br>
+        <strong>Net Salary:</strong> KSh ${net.toFixed(2)}
+      `;
+    }
+  </script>
+</body>
+</html>
