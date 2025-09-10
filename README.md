@@ -26,7 +26,7 @@ Bash
 git clone [https://github.com/Captainsan90/WK1-CodeChallenge.git]
 After cloning, navigate to the project folder and open any of the index.html files in your preferred web browser to run the application.
 
-Live Link:
+Live Link: https://captainsan90.github.io/WK1-CodeChallenge/
 
 Technologies Used
 HTML: For the structure and content of the web pages.
